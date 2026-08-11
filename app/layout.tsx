@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: {
@@ -21,11 +22,16 @@ const NAV_LINKS = [
   { href: "/vip", label: "VIP" },
 ];
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <html lang="fr">
       <body>
@@ -46,12 +52,20 @@ export default function RootLayout({
                 </li>
               ))}
             </ul>
-            <Link
-              href="/vip"
-              className="bg-yellow-400 text-brand-dark font-semibold text-sm px-4 py-1.5 rounded-full hover:bg-yellow-300 transition-colors"
-            >
-              Devenir VIP
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link
+                href="/vip"
+                className="bg-yellow-400 text-brand-dark font-semibold text-sm px-4 py-1.5 rounded-full hover:bg-yellow-300 transition-colors"
+              >
+                Devenir VIP
+              </Link>
+              <Link
+                href={user ? "/compte" : "/login"}
+                className="text-sm font-medium hover:text-yellow-400 transition-colors"
+              >
+                {user ? "Mon compte" : "Connexion"}
+              </Link>
+            </div>
           </nav>
         </header>
 
