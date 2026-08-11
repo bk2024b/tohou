@@ -39,6 +39,7 @@ export interface Match {
 }
 
 export type PredictionResult = "pending" | "won" | "lost" | "void";
+export type PredictionMarket = "1x2" | "double_chance" | "btts" | "over_under";
 
 export interface Prediction {
   id: string;
@@ -47,6 +48,8 @@ export interface Prediction {
   title: string;
   analysis_preview: string | null;
   predicted_outcome: string;
+  market: PredictionMarket | null;
+  selection: string | null;
   predicted_odds: number | null;
   confidence_level: number | null;
   is_vip: boolean;
