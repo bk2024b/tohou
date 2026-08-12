@@ -7,6 +7,8 @@ export interface Bookmaker {
   bonus_text: string | null;
   rating: number | null;
   affiliate_link: string | null;
+  legal_disclaimer: string | null;
+  is_published: boolean;
 }
 
 export interface Competition {

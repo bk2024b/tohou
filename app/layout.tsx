@@ -32,6 +32,16 @@ export default async function RootLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
+  let isAdmin = false;
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("is_admin")
+      .eq("id", user.id)
+      .maybeSingle();
+    isAdmin = profile?.is_admin ?? false;
+  }
+
   return (
     <html lang="fr">
       <body>
@@ -53,6 +63,14 @@ export default async function RootLayout({
               ))}
             </ul>
             <div className="flex items-center gap-3">
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  className="text-sm font-medium hover:text-yellow-400 transition-colors"
+                >
+                  Admin
+                </Link>
+              )}
               <Link
                 href="/vip"
                 className="bg-yellow-400 text-brand-dark font-semibold text-sm px-4 py-1.5 rounded-full hover:bg-yellow-300 transition-colors"
